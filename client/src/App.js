@@ -7,6 +7,8 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { Provider } from 'react-redux'; // Import  Provider
+import store from './store'; // Import Redux store
 
 import Home from './pages/Home';
 import Detail from './pages/Detail';
@@ -14,7 +16,6 @@ import NoMatch from './pages/NoMatch';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
-import { StoreProvider } from './utils/GlobalState';
 import Success from './pages/Success';
 import OrderHistory from './pages/OrderHistory';
 
@@ -40,9 +41,9 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <div>
-          <StoreProvider>
+      <Provider store={store}> {/* Use Redux Provider */}
+        <Router>
+          <div>
             <Nav />
             <Switch>
               <Route exact path="/" component={Home} />
@@ -53,11 +54,12 @@ function App() {
               <Route exact path="/products/:id" component={Detail} />
               <Route component={NoMatch} />
             </Switch>
-          </StoreProvider>
-        </div>
-      </Router>
+          </div>
+        </Router>
+      </Provider>
     </ApolloProvider>
   );
 }
 
 export default App;
+
